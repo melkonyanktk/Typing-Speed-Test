@@ -28,7 +28,6 @@ public class TypingSpeedTest {
         @Override
         public boolean isComplete(TestSession session) {
             long elapsed = System.currentTimeMillis() - session.getStartTime();
-            return elapsed *= 1000;
         }
     }
 
