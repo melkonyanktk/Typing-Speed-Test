@@ -92,11 +92,11 @@ public class TypingSpeedTest {
     }
 
     class displayText {
-        //method that shows the words clears console and collects input
+        //method that shows the words, clears console and collects input
 
         private static void showTargetWords(TestSession session) {}
 
-        //formatting...
+        //formatting class
 
         private static void clearConsole() {}
     }
