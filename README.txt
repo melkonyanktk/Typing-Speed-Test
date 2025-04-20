@@ -1,12 +1,7 @@
-----OUTDATED INFORMATION----
+Counts words incorrectly 
+Bad optimization 
+Incorrectly counts words
+Needs to stop the program and print error if the word count is below the needed word count(50/100)
 
-core/ TimeLimitedMode.java as it is
-WordLimitedMode.java as it is
-TypingSpeedTest/TestMode.java
-
-
-TestSession.java - TestSession, WordChecker
-
-TestMode.java in main file
-
-typingspeedtest.java contains displayText and main 
+On hold:
+Still takes input after the test is over in timeLimitedMode
