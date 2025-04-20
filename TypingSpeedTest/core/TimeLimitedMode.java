@@ -1,20 +1,44 @@
 package TypingSpeedTest.core;
 
-import TypingSpeedTest.data.CommonWords;
+import TypingSpeedTest.data.WordPicker;
 
-class TimeLimitedMode extends TypingSpeedTest.TestMode {
+import java.util.Timer;
+import java.util.TimerTask;
+
+public class TimeLimitedMode extends TypingSpeedTest.TestMode {
+    private Timer timer;
+    private volatile boolean timeExpired;
+
     public TimeLimitedMode(int seconds) {
         super("Time Limited: " + seconds + " seconds", seconds);
     }
 
+    public void testStart() {
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                timeExpired = true;
+                System.out.println("\nTime's up! Press Enter.");
+            }
+        }, value * 1000);
+    }
+
+    public void cancelTimer() {
+        if(timer != null) timer.cancel();
+    }
+
+    public boolean isTimeExpired() {
+        return timeExpired;
+    }
+
     @Override
     public void setupTest(TestSession session) {
-        session.setTargetWords(CommonWords.getRandomWords(100));
+        session.setTargetWords(WordPicker.getRandomWords(100));
     }
 
     @Override
     public boolean isComplete(TestSession session) {
-        long elapsed = System.currentTimeMillis() - session.getStartTime();
-        return elapsed >= value * 1000;
+        return timeExpired;
     }
 }

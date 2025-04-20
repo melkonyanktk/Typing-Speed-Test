@@ -12,6 +12,11 @@ public abstract class TestMode {
         this.value = value;
     }
 
+    public int getValue() {
+        return value;
+    }
+
     public abstract void setupTest(TestSession session);
     public abstract boolean isComplete(TestSession session);
+    public abstract void testStart();
 }

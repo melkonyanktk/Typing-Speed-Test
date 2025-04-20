@@ -1,42 +1,64 @@
 package TypingSpeedTest.core;
 
 public class TestSession {
-    private TypingSpeedTest.TestMode mode; //current mode
-    private String[] targetWords; //words to type
-    private String[] userWords; //user's typed words
-    private int currentWordIndex; //progress tracker
-    private int correctChars; //correct character count
-    private int incorrectChars; //Incorrect character count
-    private long startTime; //test start time
+    private final TypingSpeedTest.TestMode mode;
+    private String[] targetWords;
+    private String[] userWords;
+    private int currentWordIndex;
+    private int correctChars;
+    private int incorrectChars;
+    private long startTime;
 
     public TestSession(TypingSpeedTest.TestMode mode) {
         this.mode = mode;
-        mode.setupTest(this);
+        this.mode.setupTest(this);
     }
 
     public void start() {
         this.startTime = System.currentTimeMillis();
         this.userWords = new String[targetWords.length];
+        if(mode instanceof TimeLimitedMode) {
+            ((TimeLimitedMode) mode).testStart();
+        }
     }
 
     public void processWord(String userWord) {
-        // Your existing word processing logic
+        if(currentWordIndex >= targetWords.length) return;
+
+        String targetWord = targetWords[currentWordIndex];
+        int correct = 0;
+        int incorrect = 0;
+
+        // Character comparison logic
+        for(int i = 0; i < Math.min(userWord.length(), targetWord.length()); i++) {
+            if(userWord.charAt(i) == targetWord.charAt(i)) correct++;
+            else incorrect++;
+        }
+        incorrect += Math.abs(userWord.length() - targetWord.length());
+
+        correctChars += correct;
+        incorrectChars += incorrect;
+        userWords[currentWordIndex] = userWord;
+        currentWordIndex++;
     }
 
-    //getters
+    public String[] getUserWords() {
+        return java.util.Arrays.copyOf(userWords, currentWordIndex);
+    }
+
+    public boolean isComplete() {
+        return mode.isComplete(this);
+    }
+
+    // Getters
     public String[] getTargetWords() { return targetWords; }
     public int getCurrentWordIndex() { return currentWordIndex; }
     public long getStartTime() { return startTime; }
     public int getCorrectChars() { return correctChars; }
     public int getIncorrectChars() { return incorrectChars; }
 
-    //setters
-    public void setTargetWords(String[] words) { targetWords = words; }
-
-    class WordChecker {
-        //compares words and characters
+    // Setter
+    public void setTargetWords(String[] words) {
+        targetWords = words;
     }
-
-    //a method to process a single word from a user and its characters.
-    public boolean isComplete() { return mode.isComplete(this); }
 }
