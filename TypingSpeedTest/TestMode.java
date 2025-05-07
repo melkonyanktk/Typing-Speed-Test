@@ -1,8 +1,9 @@
 package TypingSpeedTest;
 
-import TypingSpeedTest.core.TestSession;
 
-public abstract class TestMode {
+import TypingSpeedTest.core.TestModeInterface;
+
+public abstract class TestMode implements TestModeInterface {
     protected String modeName;
     protected int value;
 
@@ -16,7 +17,5 @@ public abstract class TestMode {
         return value;
     }
 
-    public abstract void setupTest(TestSession session);
-    public abstract boolean isComplete(TestSession session);
-    public abstract void testStart();
+
 }

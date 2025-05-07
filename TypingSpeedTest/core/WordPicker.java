@@ -1,40 +1,53 @@
 package TypingSpeedTest;
-import java.io.*;
+import TypingSpeedTest.exceptions.WordListException;
+import java.io.InputStream;
 import java.util.Scanner;
 
-public class WordPicker {
-    public static void main(String[] args) {
-        String javaFile = "CommonWords.java";
-        String[] words = new String[100];
-        int wordCount = 0;
+public final class WordPicker {
+    private static final String[] WORDS;
+    private static final String WORDS_FILE = "/TypingSpeedTest/data/words.txt";
+    private static final int MAX_WORDS = 200;
 
+    static {
+        WORDS = initializeWords();
+    }
+
+    private WordPicker() {}
+
+    private static String[] initializeWords() {
         try {
-            File file = new File(javaFile);
-            Scanner scanner = new Scanner(file);
-            
-            // Skip Java code structure and look for word declarations
-            while (scanner.hasNextLine() && wordCount < 100) {
-                String line = scanner.nextLine().trim();
-                
-                // Look for lines containing word definitions like: "apple", "banana",
-                if (line.matches(".*\".+\".*")) {  // Finds lines with quotes
-                    String[] quotedWords = line.split("\"");
-                    for (String word : quotedWords) {
-                        if (word.matches("[a-zA-Z]+")) {  // Only alphabetic words
-                            words[wordCount++] = word;
-                        }
-                    }
+            return loadWords();
+        } catch (WordListException e) {
+            throw new IllegalStateException("Failed to initialize word list", e);
+        }
+    }
+
+    private static String[] loadWords() throws WordListException {
+        String[] words = new String[MAX_WORDS];
+        int count = 0;
+
+        try (InputStream inputStream = WordPicker.class.getResourceAsStream(WORDS_FILE);
+             Scanner scanner = new Scanner(inputStream)) {
+
+            if (inputStream == null) {
+                throw new WordListException("Word file not found: " + WORDS_FILE);
+            }
+
+            while (scanner.hasNextLine() && count < MAX_WORDS) {
+                String word = scanner.nextLine().trim();
+                if (!word.isEmpty()) {
+                    words[count++] = word;
                 }
             }
-            scanner.close();
 
-            System.out.println("Words loaded from Java file:");
-            for (int i = 0; i < wordCount; i++) {
-                System.out.println(words[i]);
+            if (count < MAX_WORDS) {
+                throw new WordListException(
+                        String.format("Insufficient words. Found %d, need %d", count, MAX_WORDS)
+                );
             }
-
-        } catch (FileNotFoundException e) {
-            System.out.println("Error: File '" + javaFile + "' not found!");
+        } catch (Exception e) {
+            throw new WordListException("Error loading words");
         }
+        return words;
     }
 }

@@ -1,0 +1,1 @@
+In my changes from 07.05.2025, I created an interface, which defines the common behavior for test modes, like starting the test, or checking if it's complete.
