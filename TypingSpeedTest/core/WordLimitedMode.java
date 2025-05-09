@@ -18,7 +18,7 @@ public class WordLimitedMode extends TypingSpeedTest.TestMode {
     }
 
     @Override
-    public void testStart() {
+    public void testStart(TestSession session) {
         //blank
     }
 }

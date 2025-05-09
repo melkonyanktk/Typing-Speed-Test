@@ -23,6 +23,10 @@ public class TypingSpeedTest {
         }
 
         processInput(session, input);
+
+        if(session.getEndTime() == 0) {
+            session.setEndTime(System.currentTimeMillis());
+        }
         showResults(session);
     }
 
@@ -98,7 +102,7 @@ public class TypingSpeedTest {
             }
         }
 
-        long duration = (System.currentTimeMillis() - session.getStartTime()) / 1000;
+        long duration = (session.getEndTime() - session.getStartTime()) / 1000;
         double minutes = duration / 60.0;
 
         System.out.println("\n=== TEST RESULTS ===");

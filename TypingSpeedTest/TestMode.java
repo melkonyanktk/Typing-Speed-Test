@@ -4,7 +4,7 @@ import TypingSpeedTest.core.TestSession;
 
 public abstract class TestMode {
     protected String modeName;
-    protected int value;
+    public int value;
 
     //constructor
     public TestMode(String modeName, int value) {
@@ -16,7 +16,8 @@ public abstract class TestMode {
         return value;
     }
 
+
     public abstract void setupTest(TestSession session);
     public abstract boolean isComplete(TestSession session);
-    public abstract void testStart();
+    public abstract void testStart(TestSession session);
 }

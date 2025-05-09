@@ -1,5 +1,7 @@
 package TypingSpeedTest.core;
 
+import TypingSpeedTest.TestMode;
+
 public class TestSession {
     private final TypingSpeedTest.TestMode mode;
     private String[] targetWords;
@@ -8,8 +10,9 @@ public class TestSession {
     private int correctChars;
     private int incorrectChars;
     private long startTime;
+    private long endTime;
 
-    public TestSession(TypingSpeedTest.TestMode mode) {
+    public TestSession(TestMode mode) {
         this.mode = mode;
         this.mode.setupTest(this);
     }
@@ -17,9 +20,7 @@ public class TestSession {
     public void start() {
         this.startTime = System.currentTimeMillis();
         this.userWords = new String[targetWords.length];
-        if(mode instanceof TimeLimitedMode) {
-            ((TimeLimitedMode) mode).testStart();
-        }
+        mode.testStart(this);
     }
 
     public void processWord(String userWord) {
@@ -56,9 +57,15 @@ public class TestSession {
     public long getStartTime() { return startTime; }
     public int getCorrectChars() { return correctChars; }
     public int getIncorrectChars() { return incorrectChars; }
+    public long getEndTime() { return endTime; }
+    public TestMode getMode() { return mode; }
 
-    // Setter
+    // Setters
     public void setTargetWords(String[] words) {
         targetWords = words;
+    }
+
+    public void setEndTime(long endTime) {
+        this.endTime = endTime;
     }
 }

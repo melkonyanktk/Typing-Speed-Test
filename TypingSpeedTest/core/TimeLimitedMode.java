@@ -13,7 +13,7 @@ public class TimeLimitedMode extends TypingSpeedTest.TestMode {
         super("Time Limited: " + seconds + " seconds", seconds);
     }
 
-    public void testStart() {
+    public void testStart(TestSession session) {
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
