@@ -3,11 +3,23 @@ package TypingSpeedTest.data;
 import java.io.InputStream;
 import java.util.Scanner;
 
+/**
+ * Provides word list management for typing tests.
+ * Loads words from file and enables random word selection.
+ */
 public class WordPicker {
+    /** Preloaded list of words from words.txt */
     private static final String[] WORDS = loadWords();
-    private static final String WORDS_FILE = "TypingSpeedTest/data/words.txt"; // Relative to classpath root
+    /** Path to words file in resources */
+    private static final String WORDS_FILE = "TypingSpeedTest/data/words.txt";
+    /** Required number of words in the file */
     private static final int MAX_WORDS = 200;
 
+    /**
+     * Loads words from text file into memory.
+     * @return Array of words from resource file
+     * @throws RuntimeException if file not found or invalid
+     */
     private static String[] loadWords() {
         String[] words = new String[MAX_WORDS];
         int count = 0;
@@ -36,6 +48,11 @@ public class WordPicker {
         return words;
     }
 
+    /**
+     * Selects random words from preloaded list.
+     * @param count Number of words to select
+     * @return Array of randomly selected words
+     */
     public static String[] getRandomWords(int count) {
         String[] selected = new String[count];
         for(int i = 0; i < count; i++) {

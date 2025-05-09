@@ -2,27 +2,49 @@ package TypingSpeedTest.core;
 
 import TypingSpeedTest.TestMode;
 
+/**
+ * Manages a typing test session, tracking user input and calculating statistics.
+ */
 public class TestSession {
+    /** Configuration for the current test mode */
     private final TypingSpeedTest.TestMode mode;
+    /** Words the user needs to type */
     private String[] targetWords;
+    /** Words actually typed by the user */
     private String[] userWords;
+    /** Index of current word being processed */
     private int currentWordIndex;
+    /** Count of correctly typed characters */
     private int correctChars;
+    /** Count of incorrect characters */
     private int incorrectChars;
+    /** Timestamp when test started */
     private long startTime;
+    /** Timestamp when test ended */
     private long endTime;
 
+    /**
+     * Creates new test session with specified mode.
+     * @param mode Test configuration to use
+     */
     public TestSession(TestMode mode) {
         this.mode = mode;
         this.mode.setupTest(this);
     }
 
+    /**
+     * Initializes timing and storage for new test.
+     */
     public void start() {
         this.startTime = System.currentTimeMillis();
         this.userWords = new String[targetWords.length];
         mode.testStart(this);
     }
 
+    /**
+     * Processes user's word input and updates statistics.
+     * @param userWord The text entered by the user
+     */
     public void processWord(String userWord) {
         if(currentWordIndex >= targetWords.length) return;
 
@@ -30,7 +52,6 @@ public class TestSession {
         int correct = 0;
         int incorrect = 0;
 
-        // Character comparison logic
         for(int i = 0; i < Math.min(userWord.length(), targetWord.length()); i++) {
             if(userWord.charAt(i) == targetWord.charAt(i)) correct++;
             else incorrect++;
@@ -43,28 +64,69 @@ public class TestSession {
         currentWordIndex++;
     }
 
+    /**
+     * Gets user's typed words up to current progress.
+     * @return Array of processed user words
+     */
     public String[] getUserWords() {
         return java.util.Arrays.copyOf(userWords, currentWordIndex);
     }
 
+    /**
+     * Checks if test completion conditions are met.
+     * @return true if test should end
+     */
     public boolean isComplete() {
         return mode.isComplete(this);
     }
 
-    // Getters
+    /**
+     * @return Target words for the test
+     */
     public String[] getTargetWords() { return targetWords; }
+
+    /**
+     * @return Current word position in test
+     */
     public int getCurrentWordIndex() { return currentWordIndex; }
+
+    /**
+     * @return Timestamp when test started
+     */
     public long getStartTime() { return startTime; }
+
+    /**
+     * @return Count of correctly typed characters
+     */
     public int getCorrectChars() { return correctChars; }
+
+    /**
+     * @return Count of incorrect characters
+     */
     public int getIncorrectChars() { return incorrectChars; }
+
+    /**
+     * @return Timestamp when test ended
+     */
     public long getEndTime() { return endTime; }
+
+    /**
+     * @return Current test mode configuration
+     */
     public TestMode getMode() { return mode; }
 
-    // Setters
+    /**
+     * Sets target words for the test.
+     * @param words Array of words to use as targets
+     */
     public void setTargetWords(String[] words) {
         targetWords = words;
     }
 
+    /**
+     * Records test completion timestamp.
+     * @param endTime System time when test ended
+     */
     public void setEndTime(long endTime) {
         this.endTime = endTime;
     }
