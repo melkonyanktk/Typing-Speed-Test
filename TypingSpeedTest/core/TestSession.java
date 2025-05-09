@@ -29,7 +29,6 @@ public class TestSession {
      * @param mode Test configuration to use
      */
     public TestSession(TestMode mode) {
-        // Create a defensive copy of the mode
         if (mode instanceof TimeLimitedMode) {
             this.mode = new TimeLimitedMode((TimeLimitedMode) mode);
         } else if (mode instanceof WordLimitedMode) {

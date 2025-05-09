@@ -50,6 +50,6 @@ public class WordLimitedMode extends TypingSpeedTest.TestMode {
      */
     @Override
     public void testStart(TestSession session) {
-        // Intentionally blank - no timer needed for word-limited mode
+        // blank
     }
 }
