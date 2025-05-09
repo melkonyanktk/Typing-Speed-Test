@@ -21,6 +21,16 @@ public class TimeLimitedMode extends TypingSpeedTest.TestMode {
     }
 
     /**
+     * Copy constructor of TimeLimitedMode, a deep copy
+     * Does not copy the active timer
+     * @param other The TimeLimitedMode instance to copy
+     */
+    public TimeLimitedMode(TimeLimitedMode other) {
+        super(other);
+        this.timer = null; // Do not copy active timer
+        this.timeExpired = other.timeExpired;
+    }
+    /**
      * Starts countdown timer for the test session.
      * @param session Test session to monitor
      */

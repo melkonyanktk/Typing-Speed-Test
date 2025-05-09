@@ -23,6 +23,15 @@ public abstract class TestMode {
     }
 
     /**
+     *Copy constructor for TestMode
+     * @param other The TestMode instance to copy
+     */
+    protected TestMode(TestMode other) {
+        this.modeName = other.modeName;
+        this.value = other.value;
+    }
+
+    /**
      * Gets the mode's configuration value.
      * @return Test duration in seconds or word count depending on mode
      */

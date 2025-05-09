@@ -25,10 +25,18 @@ public class TestSession {
 
     /**
      * Creates new test session with specified mode.
+     * Ensures session configuration cannot be modified externally after its initialization.
      * @param mode Test configuration to use
      */
     public TestSession(TestMode mode) {
-        this.mode = mode;
+        // Create a defensive copy of the mode
+        if (mode instanceof TimeLimitedMode) {
+            this.mode = new TimeLimitedMode((TimeLimitedMode) mode);
+        } else if (mode instanceof WordLimitedMode) {
+            this.mode = new WordLimitedMode((WordLimitedMode) mode);
+        } else {
+            throw new IllegalArgumentException("Unsupported TestMode type: " + mode.getClass().getName());
+        }
         this.mode.setupTest(this);
     }
 

@@ -17,6 +17,14 @@ public class WordLimitedMode extends TypingSpeedTest.TestMode {
     }
 
     /**
+     * Copy constructor of WordLimitedMode, a deep copy
+     * @param other The WordLimitedMode instance to copy
+     */
+    public WordLimitedMode(WordLimitedMode other) {
+        super(other);
+    }
+
+    /**
      * Initializes test session with random target words.
      * @param session Test session to configure
      */
