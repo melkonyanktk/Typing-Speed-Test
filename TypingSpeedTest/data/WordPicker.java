@@ -1,5 +1,6 @@
 package TypingSpeedTest.data;
 
+import TypingSpeedTest.exceptions.WordListException;
 import java.io.InputStream;
 import java.util.Scanner;
 
@@ -9,18 +10,28 @@ import java.util.Scanner;
  */
 public class WordPicker {
     /** Preloaded list of words from words.txt */
-    private static final String[] WORDS = loadWords();
+    private static final String[] WORDS;
     /** Path to words file in resources */
     private static final String WORDS_FILE = "TypingSpeedTest/data/words.txt";
     /** Required number of words in the file */
     private static final int MAX_WORDS = 200;
 
+    // Static initializer block to handle the exception
+    static {
+        try {
+            WORDS = loadWords();
+        } catch (WordListException e) {
+            // Wrap in RuntimeException since static initializers can't throw checked exceptions
+            throw new RuntimeException("Failed to load word list: " + e.getMessage(), e);
+        }
+    }
+
     /**
      * Loads words from text file into memory.
      * @return Array of words from resource file
-     * @throws RuntimeException if file not found or invalid
+     * @throws WordListException if file not found or invalid
      */
-    private static String[] loadWords() {
+    private static String[] loadWords() throws WordListException {
         String[] words = new String[MAX_WORDS];
         int count = 0;
 
@@ -28,8 +39,7 @@ public class WordPicker {
              Scanner scanner = new Scanner(inputStream)) {
 
             if (inputStream == null) {
-                System.err.println("Error: words.txt not found at classpath: " + WORDS_FILE);
-                System.exit(1);
+                throw new WordListException("words.txt not found at classpath: " + WORDS_FILE);
             }
 
             while(scanner.hasNextLine() && count < MAX_WORDS) {
@@ -38,12 +48,10 @@ public class WordPicker {
             }
 
             if(count < MAX_WORDS) {
-                System.err.println("Error: File must contain " + MAX_WORDS + " non-empty words");
-                System.exit(1);
+                throw new WordListException("File must contain " + MAX_WORDS + " non-empty words");
             }
         } catch (Exception e) {
-            System.err.println("Error loading words: " + e.getMessage());
-            System.exit(1);
+            throw new WordListException("Error loading words: " + e.getMessage());
         }
         return words;
     }
@@ -54,6 +62,9 @@ public class WordPicker {
      * @return Array of randomly selected words
      */
     public static String[] getRandomWords(int count) {
+        if (count <= 0) {
+            throw new IllegalArgumentException("Word count must be positive");
+        }
         String[] selected = new String[count];
         for(int i = 0; i < count; i++) {
             selected[i] = WORDS[(int)(Math.random() * WORDS.length)];

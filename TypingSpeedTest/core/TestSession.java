@@ -1,6 +1,7 @@
 package TypingSpeedTest.core;
 
 import TypingSpeedTest.TestMode;
+import TypingSpeedTest.exceptions.InvalidModeException;
 
 /**
  * Manages a typing test session, tracking user input and calculating statistics.
@@ -27,14 +28,18 @@ public class TestSession {
      * Creates new test session with specified mode.
      * Ensures session configuration cannot be modified externally after its initialization.
      * @param mode Test configuration to use
+     * @throws InvalidModeException if unsupported mode type is provided
      */
-    public TestSession(TestMode mode) {
+    public TestSession(TestMode mode) throws InvalidModeException {
+        if (mode == null) {
+            throw new InvalidModeException("Test mode cannot be null");
+        }
         if (mode instanceof TimeLimitedMode) {
             this.mode = new TimeLimitedMode((TimeLimitedMode) mode);
         } else if (mode instanceof WordLimitedMode) {
             this.mode = new WordLimitedMode((WordLimitedMode) mode);
         } else {
-            throw new IllegalArgumentException("Unsupported TestMode type: " + mode.getClass().getName());
+            throw new InvalidModeException("Unsupported TestMode type: " + mode.getClass().getName());
         }
         this.mode.setupTest(this);
     }
