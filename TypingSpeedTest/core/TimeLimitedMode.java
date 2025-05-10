@@ -78,6 +78,7 @@ public class TimeLimitedMode extends TypingSpeedTest.TestMode {
      */
     @Override
     public boolean isComplete(TestSession session) {
-        return timeExpired || session.getCurrentWordIndex() >= session.getTargetWords().length;
+        return timeExpired ||
+                session.getCurrentWordIndex() >= session.getTargetWords().length;
     }
 }

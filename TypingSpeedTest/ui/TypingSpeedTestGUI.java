@@ -287,7 +287,7 @@ public class TypingSpeedTestGUI extends JFrame {
         closeButton.addActionListener(e -> resultsDialog.dispose());
         closeButton.setFocusPainted(false);
         closeButton.setBackground(new Color(70, 130, 180));
-        closeButton.setForeground(Color.WHITE);
+        closeButton.setForeground(Color.BLACK);
 
         InputMap im = closeButton.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), "none");
